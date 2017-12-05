@@ -270,7 +270,7 @@ class InterestedList extends Component {
         } else {
             return (
                 <div>
-                    <h1>Interested List</h1>
+                    <h1>My Cart</h1>
                     <ul>
                         <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[0])} />
                         <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[1])} />
