@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   background-color: #00080c;
-  color: #fff4f9;
+  color: #ffffff;
   min-height: 100vh;
   overflow-y: hidden;
 }
@@ -30,6 +30,7 @@
 .ul-container {
   margin: auto;
   width: 70%;
+  min-width: 400px;
 }
 
 li {
@@ -81,7 +82,84 @@ h3 {
 }
 
 .modal-button {
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 10px;
+  width: 15px;
+  height: 15px;
+}
+
+.modal-button-img {
+  width: 40px;
+  height: 40px;
+}
+
+.modal-li {
+  height: auto;
+}
+
+.modal-img {
+  height: 10vh;
+}
+
+.modal {
+  position: fixed;
+  width: 80%;
+  height: 80%;
+  top: 60%;
+  left: 50%;
+  border: solid 5px rgb(71, 71, 105);
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: #444;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  opacity: 0;
+  visibility: hidden; 
+  overflow-y: scroll;
+}
+
+.modal.show {
+  opacity: 1;
+  visibility: visible; 
+  top: 50%;
+}
+
+.backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+  opacity: 0;
+  visibility: hidden; 
+}
+
+.backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-ui-button {
+  border-radius: 5px;
+  background-color: #000000;
+  color: white;
+  border-width: 0;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.text-input {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding: 5px 5px;
 }

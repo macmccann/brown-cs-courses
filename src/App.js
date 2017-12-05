@@ -368,12 +368,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-          <InterestedList items={classes} />
-          <p><button onClick={() => this.closeModal()}>Close</button></p>
+        <Modal isVisible={this.state.isModalOpen} onClose={() => this.closeModal()}>
+          <InterestedList className='interested-list' items={classes} />
+          <button className='modal-ui-button' onClick={() => this.closeModal()}>Close</button>
         </Modal>
-        <FilteredList items={classes} />
-        <button className="modal-button" onClick={() => this.openModal()}>Open modal</button>
+        <div >
+          <FilteredList items={classes} />
+        </div>
+        <button className="modal-button" onClick={() => this.openModal()}><img className='modal-button-img' src='./cart-logo.png'/></button>
       </div>
     );
   }
