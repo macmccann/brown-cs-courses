@@ -375,7 +375,7 @@ class App extends Component {
         <div >
           <FilteredList items={classes} />
         </div>
-        <button className="modal-button" onClick={() => this.openModal()}><img className='modal-button-img' src='./cart-logo.png'/></button>
+        <button className="modal-button" onClick={() => this.openModal()}><img className='modal-button-img' src='./cart-logo.png'/><p>Click me!</p></button>
       </div>
     );
   }

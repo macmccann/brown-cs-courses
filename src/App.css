@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background-color: #00080c;
+  background-image: url("skyscraper_dark.png");
   color: #ffffff;
   min-height: 100vh;
   overflow-y: hidden;
@@ -12,7 +13,7 @@
 }
 
 .App-header {
-  background-color: #222;
+  background-color:transparent;
   height: 150px;
   padding: 20px;
   color: white;
@@ -60,7 +61,7 @@ li > p {
 
 button {
   border: none;
-  background: #00080c;
+  background: transparent;
   color: white;
   cursor: pointer;
 }
@@ -85,8 +86,12 @@ h3 {
   position: fixed;
   top: 10px;
   left: 10px;
-  width: 15px;
-  height: 15px;
+  width: auto;
+}
+
+.modal-button > p {
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .modal-button-img {
@@ -162,4 +167,8 @@ h3 {
   margin-left: 10px;
   margin-bottom: 10px;
   padding: 5px 5px;
+}
+
+.submit-button {
+  margin-left: 10px;
 }

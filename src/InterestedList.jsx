@@ -6,49 +6,39 @@ class InterestedList extends Component {
         super(props);
 
         this.state = {
-            isSubmitted: false,
-            value0: '',
-            value1: '',
-            value2: '',
-            value3: '',
-            value4: '',
+            isCleared: [true],
             submittedCourseNames: [],
             totalMedianHours: 0,
             suggestedPathway: '',
+            count: 1,
         };
 
-        this.getTotalMedianHours = this.getTotalMedianHours.bind(this);
-        this.handleChange0 = this.handleChange0.bind(this);
-        this.handleChange1 = this.handleChange1.bind(this);
-        this.handleChange2 = this.handleChange2.bind(this);
-        this.handleChange3 = this.handleChange3.bind(this);
-        this.handleChange4 = this.handleChange4.bind(this);
+        this.getSuggestedPathway = this.getSuggestedPathway.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.addInterestCard = this.addInterestCard.bind(this);
+        this.renderList = this.renderList.bind(this);
         this.clear = this.clear.bind(this);
-        this.submit = this.submit.bind(this);
     }
 
-    submit(event) {
-        event.preventDefault();
-        this.setState(() => {
-            return { 
-                isSubmitted: true,
-                submittedCourseNames: [
-                    this.state.value0,
-                    this.state.value1,
-                    this.state.value2,
-                    this.state.value3,
-                    this.state.value4
-                ],
-            };
-        }, () => {
-            this.setState({
-                totalMedianHours: this.getTotalMedianHours(),
-                suggestedPathway: this.getSuggestedPathway(),
-            });
-        });
+    // submit(event) {
+    //     event.preventDefault();
+    //     this.setState(() => {
+    //         return { 
+    //             isSubmitted: true,
+    //             submittedCourseNames: [
+    //                 this.state.value0,
+    //                 this.state.value1,
+    //                 this.state.value2,
+    //                 this.state.value3,
+    //                 this.state.value4
+    //             ],
+    //         };
+    //     }, () => {
 
-        event.preventDefault();
-    }
+    //     });
+
+    //     event.preventDefault();
+    // }
 
     findCourseFromCode(code) {
         for(let i = 0; i < this.props.items.length; i++) {
@@ -56,18 +46,6 @@ class InterestedList extends Component {
                 return this.props.items[i];
             }
         }
-    }
-
-    getTotalMedianHours() {
-        let sum = 0;
-        this.state.submittedCourseNames.forEach(code => {
-            const item = this.findCourseFromCode(code);
-
-            if (item && item.typical_week_hrs) {
-                sum += item.typical_week_hrs;
-            }
-        });
-        return sum.toFixed(1);
     }
 
     getSuggestedPathway() {
@@ -194,95 +172,106 @@ class InterestedList extends Component {
         if (maxPathways.length === 0) {
             return 'None';
         } else {
-            console.log('maxPathways: ' + maxPathways);
             return maxPathways.join(', ');
         }
         
     }
 
-    handleChange0(event) {
-        this.setState({ value0: event.target.value});
-    }
-
-    handleChange1(event) {
-        this.setState({ value1: event.target.value });
-    }
-
-    handleChange2(event) {
-        this.setState({ value2: event.target.value });
-    }
-
-    handleChange3(event) {
-        this.setState({ value3: event.target.value });
-    }
-
-    handleChange4(event) {
-        this.setState({ value4: event.target.value });
+    handleSubmit(item, i) {
+        this.state.submittedCourseNames.push(item.code);
+        this.setState({ suggestedPathway: this.getSuggestedPathway() });
+        let newIsCleared = this.state.isCleared.slice();
+        newIsCleared[i] = false;
+        this.setState({
+            isCleared: newIsCleared,
+            totalMedianHours: this.state.totalMedianHours + item.typical_week_hrs,
+        });
     }
 
     clear() {
         this.setState({
-            isSubmitted: false,
-            value0: '',
-            value1: '',
-            value2: '',
-            value3: '',
-            value4: '',
+            isCleared: [true],
+            totalMedianHours: 0,
             submittedCourseNames: [],
+            count: 1,
         });
     }
 
+    addInterestCard() {
+        const newCount = this.state.count + 1;
+        console.log('fdsa');
+        console.log(this.state.isCleared);
+        let newIsCleared = this.state.isCleared.slice();
+        newIsCleared.push(true);
+        this.setState({
+            count: newCount,
+            isCleared: newIsCleared,
+        });
+        this.render();
+    }
+
+    renderList() {
+        const interestCardList = [];
+        for (let i = 0; i < this.state.count; i++) {
+            interestCardList.push(<InterestCard key={i.toString()} isCleared={this.state.isCleared[i]} items={this.props.items} handleSubmit={this.handleSubmit} i={i}/>);
+        }
+        return interestCardList;
+    }
+
     render() {
-        if (!this.state.isSubmitted) {
-            return (
-                <div>
-                    <h1>My Cart</h1>
-                    <form onSubmit={this.submit}>
-                        <label>
-                            Course 1:
-                            <input className='text-input' type="text" value={this.state.value0} onChange={this.handleChange0} />
-                        </label>
-                        <br />
-                        <label>
-                            Course 2:
-                            <input className='text-input' type="text" value={this.state.value1} onChange={this.handleChange1} />
-                        </label>
-                        <br />
-                        <label>
-                            Course 3:
-                            <input className='text-input' type="text" value={this.state.value2} onChange={this.handleChange2} />
-                        </label>
-                        <br />
-                        <label>
-                            Course 4:
-                            <input className='text-input' type="text" value={this.state.value3} onChange={this.handleChange3} />
-                        </label>
-                        <br />
-                        <label>
-                            Course 5:
-                            <input className='text-input' type="text" value={this.state.value4} onChange={this.handleChange4} />
-                        </label>
-                        <br />
-                        <input className='modal-ui-button' type="submit" value="Submit" />
-                    </form>
-                </div>
-            );
-        } else {
+        // if (!this.state.isSubmitted) {
+        //     return (
+        //         <div>
+        //             <h1>My Cart</h1>
+        //             <form onSubmit={this.submit}>
+        //                 <label>
+        //                     Course 1:
+        //                     <input className='text-input' type="text" value={this.state.value0} onChange={this.handleChange0} />
+        //                 </label>
+        //                 <br />
+        //                 <label>
+        //                     Course 2:
+        //                     <input className='text-input' type="text" value={this.state.value1} onChange={this.handleChange1} />
+        //                 </label>
+        //                 <br />
+        //                 <label>
+        //                     Course 3:
+        //                     <input className='text-input' type="text" value={this.state.value2} onChange={this.handleChange2} />
+        //                 </label>
+        //                 <br />
+        //                 <label>
+        //                     Course 4:
+        //                     <input className='text-input' type="text" value={this.state.value3} onChange={this.handleChange3} />
+        //                 </label>
+        //                 <br />
+        //                 <label>
+        //                     Course 5:
+        //                     <input className='text-input' type="text" value={this.state.value4} onChange={this.handleChange4} />
+        //                 </label>
+        //                 <br />
+        //                 <input className='modal-ui-button' type="submit" value="Submit" />
+        //             </form>
+        //         </div>
+        //     );
+        // } else {
             return (
                 <div>
                     <h1>My Cart</h1>
                     <ul>
-                        <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[0])} />
+                        {this.renderList()}
+                        {/* <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[0])} />
                         <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[1])} />
                         <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[2])} />
                         <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[3])} />
-                        <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[4])} />
+                        <InterestCard isSubmitted={this.state.isSubmitted} item={this.findCourseFromCode(this.state.submittedCourseNames[4])} /> */}
                     </ul>
                     <p>Total Median Hours: {this.state.totalMedianHours} | Suggested Pathway(s): {this.state.suggestedPathway}</p>
+                    <button className='modal-ui-button' onClick={() => { this.addInterestCard(); }}>Add</button>
+                    <br/>
                     <button className='modal-ui-button' onClick={() => { this.clear(); }} >Reset</button>
                 </div>
             );
-        }
+        // }
         
     }
 }
